@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     try {
-      axios.get(`https://api-web.nhle.com/v1/score/now`).then((responce) => {
+      axios.get(`/api/games`).then((responce) => {
         console.log(responce.data.games)
         setGames(responce.data.games);
       });

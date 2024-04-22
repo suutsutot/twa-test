@@ -8,5 +8,15 @@ export default defineConfig({
   build: {
     outDir: './docs'
   },
-  base: '/twa-test/'
+  base: '/twa-test/',
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      }
+    }
+  }
 });
