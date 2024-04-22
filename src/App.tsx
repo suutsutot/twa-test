@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
 import axios from 'axios';
 import { format } from "date-fns";
 
