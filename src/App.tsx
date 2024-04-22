@@ -1,41 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import twaLogo from './assets/tapps.png'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import WebApp from '@twa-dev/sdk';
+import axios from 'axios';
+import { format } from "date-fns";
 
-import WebApp from '@twa-dev/sdk'
+import './App.css';
+import { Game, Team } from './shared/interfaces/game.interface';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [games, setGames] = useState<Game[]>([]);
+
+  const currentDate = format(new Date(), "dd MMMM Y");
+
+  useEffect(() => {
+    try {
+      axios.get(`https://api-web.nhle.com/v1/score/now`).then((responce) => {
+        console.log(responce.data.games)
+        setGames(responce.data.games);
+      });
+    } catch (error: any) {
+      throw error;
+    }
+  }, []);
+
+  const gameRender = (game: Game, isLast: boolean) => {
+    return (
+      <div key={game.id} className="card" style={{ marginBottom: isLast ? 0 : 20 }}>
+        {teamRender(game.awayTeam)}
+        <span>-</span>
+        {teamRender(game.homeTeam, true)}
+      </div>
+    )
+  }
+
+  const teamRender = (team: Team, reverse?: boolean) => {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: reverse ? 'row-reverse' : 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <img src={team.logo} />
+          <span>{team.name.default}</span>
+        </div>
+        <div className="score-container">
+          <span className="score">{team.score}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
+      <h2>Daily scores</h2>
+      <h4>{currentDate}</h4>
       <div>
-        <a href="https://ton.org/dev" target="_blank">
-          <img src={twaLogo} className="logo" alt="TWA logo" />
-        </a>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>TWA + Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      {/*  */}
-      <div className="card">
-        <button onClick={() => WebApp.showAlert(`Hello Bro! Current count is ${count}`)}>
-            Show Alert
-        </button>
+        {games.map((game, index, arr) => gameRender(game, arr.length - 1 === index))}
       </div>
     </>
   )
 }
 
-export default App
+export default App;
