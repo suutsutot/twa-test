@@ -1,9 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import WebApp from '@twa-dev/sdk';
 
-import WebApp from '@twa-dev/sdk'
+import App from './App.tsx';
+import './index.css';
 
 WebApp.ready();
 

@@ -8,10 +8,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 import { Game, Team } from './shared/interfaces/game.interface';
 
+const http = axios.create({
+  baseURL: process.env.API_URL || 'https://nhl-bot-be.onrender.com',
+  headers: {
+      "Content-type": "application/json"
+  }
+});
+
 function App() {
   const [games, setGames] = useState<Game[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
 
   const onChange = (date: Date) => {
     setSelectedDate(date);
@@ -20,7 +26,7 @@ function App() {
   useEffect(() => {
     try {
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      axios.get(`/api/games/${formattedDate}`).then((responce) => {
+      http.get(`/api/games/${formattedDate}`).then((responce) => {
         console.log(responce.data.games)
         setGames(responce.data.games);
       });
