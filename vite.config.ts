@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://nhl-bot-be.onrender.com/',
         changeOrigin: true,
         secure: false,
         ws: true,

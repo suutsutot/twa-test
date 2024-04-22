@@ -35,6 +35,7 @@ export interface Team {
     score: number;
     sog: number;
     logo: string;
+    record: string;
 }
 
 interface TvBroadcast {
