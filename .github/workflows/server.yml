@@ -39,4 +39,4 @@ jobs:
     - name: npm install, build
       run: |        
         cd server && npm install
-        node server/index.js
+        node index.js
